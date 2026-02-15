@@ -1,0 +1,59 @@
+{
+  "name": "burgundy-mobile-wallpaper",
+  "version": 1,
+  "dimensions": {
+    "width": 1080,
+    "height": 1920
+  },
+  "loopSeconds": 10,
+  "fpsHint": 60,
+  "palette": {
+    "burgundy": "#8b1538",
+    "rose": "#e85c8a",
+    "silver": "#cfc7ca"
+  },
+  "layers": [
+    {
+      "name": "deep",
+      "count": 38,
+      "radius": [18, 52],
+      "alpha": [0.07, 0.2],
+      "drift": 20,
+      "parallax": 0.18,
+      "speed": 0.35,
+      "colorWeights": {
+        "burgundy": 0.78,
+        "rose": 0.16,
+        "silver": 0.06
+      }
+    },
+    {
+      "name": "mid",
+      "count": 30,
+      "radius": [10, 30],
+      "alpha": [0.12, 0.34],
+      "drift": 38,
+      "parallax": 0.34,
+      "speed": 0.52,
+      "colorWeights": {
+        "burgundy": 0.66,
+        "rose": 0.22,
+        "silver": 0.12
+      }
+    },
+    {
+      "name": "front",
+      "count": 20,
+      "radius": [6, 18],
+      "alpha": [0.16, 0.52],
+      "drift": 56,
+      "parallax": 0.6,
+      "speed": 0.78,
+      "colorWeights": {
+        "burgundy": 0.54,
+        "rose": 0.2,
+        "silver": 0.26
+      }
+    }
+  ]
+}

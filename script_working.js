@@ -1,1303 +1,4 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مسبحة التُقَى</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-primary: #f8f9fa;
-            --bg-secondary: #ffffff;
-            --accent-rose: #e85c8a;
-            --accent-burgundy: #8b1538;
-            --accent-silver: #c0c0c0;
-            --text-primary: #2d3436;
-            --text-secondary: #636e72;
-            --glass-bg: rgba(255, 255, 255, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.9);
-            --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.08);
-            --shadow-glow: 0 0 40px rgba(232, 92, 138, 0.15);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Cairo', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 50%, #f0f2f5 100%);
-            min-height: 100vh;
-            overflow-x: hidden;
-            color: var(--text-primary);
-        }
-
-        /* Silver Shiny Background */
-        .silver-bg {
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(192, 192, 192, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(232, 92, 138, 0.05) 0%, transparent 50%),
-                linear-gradient(180deg, #fafbfc 0%, #f0f2f5 100%);
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-        }
-
-        .silver-shine {
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent 30%,
-                rgba(255, 255, 255, 0.4) 50%,
-                transparent 70%
-            );
-            animation: shine 8s ease-in-out infinite;
-            pointer-events: none;
-        }
-
-        @keyframes shine {
-            0%, 100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            50% { transform: translateX(0%) translateY(0%) rotate(45deg); }
-        }
-
-        /* Main Container */
-        .app-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            min-height: 100vh;
-            position: relative;
-        }
-
-        /* Header */
-        .header {
-            text-align: center;
-            padding: 20px 0;
-            position: relative;
-        }
-
-        .title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent-burgundy) 0%, var(--accent-rose) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 10px rgba(139, 21, 56, 0.1);
-            letter-spacing: -1px;
-        }
-
-        .subtitle {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-top: 5px;
-            font-weight: 400;
-        }
-
-        /* Timer Section */
-        .timer-section {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--shadow-soft);
-        }
-
-        .timer-display {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--accent-burgundy);
-            font-family: 'Cairo', monospace;
-            min-width: 120px;
-            text-align: center;
-            letter-spacing: 2px;
-        }
-
-        .timer-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: none;
-            background: linear-gradient(135deg, var(--accent-rose) 0%, var(--accent-burgundy) 100%);
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 15px rgba(232, 92, 138, 0.3);
-            font-size: 1rem;
-        }
-
-        .timer-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(232, 92, 138, 0.4);
-        }
-
-        .timer-btn:active {
-            transform: scale(0.95);
-        }
-
-        /* Main Circle */
-        .circle-container {
-            position: relative;
-            width: 320px;
-            height: 320px;
-            margin: 0 auto 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .circle-outer {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(240,240,240,0.8) 100%);
-            box-shadow: 
-                0 20px 60px rgba(0,0,0,0.1),
-                inset 0 -10px 30px rgba(0,0,0,0.05),
-                inset 0 10px 30px rgba(255,255,255,0.8),
-                0 0 0 1px rgba(255,255,255,0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .circle-outer.glowing {
-            animation: glowPulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes glowPulse {
-            0%, 100% { box-shadow: 0 20px 60px rgba(0,0,0,0.1), 0 0 30px rgba(232, 92, 138, 0.2); }
-            50% { box-shadow: 0 20px 60px rgba(0,0,0,0.1), 0 0 60px rgba(232, 92, 138, 0.4), 0 0 100px rgba(232, 92, 138, 0.2); }
-        }
-
-        .circle-inner {
-            width: 280px;
-            height: 280px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            box-shadow: 
-                inset 0 5px 15px rgba(0,0,0,0.05),
-                0 5px 20px rgba(0,0,0,0.08);
-            cursor: pointer;
-            transition: transform 0.1s ease;
-        }
-
-        .circle-inner:active {
-            transform: scale(0.98);
-        }
-
-        .circle-inner::before {
-            content: '';
-            position: absolute;
-            inset: 10px;
-            border-radius: 50%;
-            border: 2px solid transparent;
-            background: linear-gradient(135deg, var(--accent-rose), var(--accent-burgundy)) border-box;
-            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0.3;
-        }
-
-        .count-number {
-            font-size: 5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent-burgundy) 0%, var(--accent-rose) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            line-height: 1;
-            font-family: 'Cairo', sans-serif;
-            transition: all 0.3s ease;
-        }
-
-        .count-number.popping {
-            animation: popNumber 0.3s ease;
-        }
-
-        @keyframes popNumber {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-
-        .count-label {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            margin-top: 10px;
-            font-weight: 600;
-        }
-
-        /* Pencil Icon */
-        .edit-btn {
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent-rose) 0%, var(--accent-burgundy) 100%);
-            border: 3px solid white;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(232, 92, 138, 0.4);
-            transition: all 0.3s ease;
-            z-index: 10;
-            font-size: 1.2rem;
-        }
-
-        .edit-btn:hover {
-            transform: translateX(-50%) scale(1.1);
-            box-shadow: 0 6px 20px rgba(232, 92, 138, 0.5);
-        }
-
-        /* Dhikr Name Above Circle */
-        .current-dhikr-name {
-            text-align: center;
-            margin-bottom: 20px;
-            padding: 15px 30px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--shadow-soft);
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent-burgundy);
-            font-family: 'Noto Naskh Arabic', serif;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Controls */
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .control-btn {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: none;
-            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
-            color: var(--accent-burgundy);
-            font-size: 1.5rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 
-                0 4px 15px rgba(0,0,0,0.08),
-                0 0 0 1px rgba(0,0,0,0.05);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .control-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, var(--accent-rose) 0%, var(--accent-burgundy) 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .control-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 25px rgba(232, 92, 138, 0.3);
-            color: white;
-        }
-
-        .control-btn:hover::before {
-            opacity: 1;
-        }
-
-        .control-btn span {
-            position: relative;
-            z-index: 1;
-        }
-
-        .control-btn:active {
-            transform: translateY(-1px) scale(0.98);
-        }
-
-        .control-btn.active {
-            background: linear-gradient(135deg, var(--accent-rose) 0%, var(--accent-burgundy) 100%);
-            color: white;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(232, 92, 138, 0.4); }
-            50% { box-shadow: 0 0 0 10px rgba(232, 92, 138, 0); }
-        }
-
-        /* Preset Dhikrs Section */
-        .presets-section {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 25px;
-            padding: 25px;
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--shadow-soft);
-            margin-bottom: 20px;
-        }
-
-        .presets-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--accent-burgundy);
-            margin-bottom: 15px;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .presets-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 10px;
-        }
-
-        .preset-btn {
-            padding: 12px 15px;
-            border: 2px solid transparent;
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            border-radius: 12px;
-            cursor: pointer;
-            font-family: 'Noto Naskh Arabic', serif;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .preset-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, var(--accent-rose) 0%, var(--accent-burgundy) 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .preset-btn:hover, .preset-btn.active {
-            border-color: var(--accent-rose);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(232, 92, 138, 0.2);
-            color: white;
-        }
-
-        .preset-btn:hover::before, .preset-btn.active::before {
-            opacity: 1;
-        }
-
-        .preset-btn span {
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Auto Mode Panel */
-        .auto-mode-panel {
-            background: linear-gradient(135deg, rgba(232, 92, 138, 0.1) 0%, rgba(139, 21, 56, 0.05) 100%);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 2px solid rgba(232, 92, 138, 0.2);
-            display: none;
-        }
-
-        .auto-mode-panel.active {
-            display: block;
-            animation: slideDown 0.3s ease;
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .auto-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .rhythm-detector {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .detect-btn {
-            padding: 12px 25px;
-            background: linear-gradient(135deg, var(--accent-rose) 0%, var(--accent-burgundy) 100%);
-            color: white;
-            border: none;
-            border-radius: 25px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(232, 92, 138, 0.3);
-        }
-
-        .detect-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(232, 92, 138, 0.4);
-        }
-
-        .speed-display {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--accent-burgundy);
-            min-width: 80px;
-            text-align: center;
-        }
-
-        .slider-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .speed-slider {
-            width: 100%;
-            height: 8px;
-            border-radius: 4px;
-            background: linear-gradient(90deg, var(--accent-rose) 0%, var(--accent-burgundy) 100%);
-            outline: none;
-            -webkit-appearance: none;
-        }
-
-        .speed-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: white;
-            border: 3px solid var(--accent-rose);
-            cursor: pointer;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            transition: transform 0.2s ease;
-        }
-
-        .speed-slider::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-        }
-
-        .slider-labels {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-
-        /* Sound & Vibration Toggles */
-        .toggles-section {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .toggle-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            background: var(--glass-bg);
-            border: 2px solid transparent;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            color: var(--text-secondary);
-        }
-
-        .toggle-btn:hover {
-            border-color: var(--accent-rose);
-            transform: translateY(-2px);
-        }
-
-        .toggle-btn.active {
-            background: linear-gradient(135deg, var(--accent-rose) 0%, var(--accent-burgundy) 100%);
-            color: white;
-            border-color: transparent;
-        }
-
-        /* Custom Rose */
-        .floating-rose {
-            position: fixed;
-            width: 70px;
-            height: 70px;
-            cursor: grab;
-            z-index: 1000;
-            filter: drop-shadow(0 5px 15px rgba(232, 92, 138, 0.4));
-            transition: filter 0.3s ease;
-            right: 20px;
-            bottom: 20px;
-        }
-
-        .floating-rose:active {
-            cursor: grabbing;
-        }
-
-        .floating-rose.dragging {
-            filter: drop-shadow(0 10px 30px rgba(232, 92, 138, 0.6));
-        }
-
-        .rose-svg {
-            width: 100%;
-            height: 100%;
-            animation: roseGlow 3s ease-in-out infinite;
-        }
-
-        @keyframes roseGlow {
-            0%, 100% { filter: drop-shadow(0 0 10px rgba(232, 92, 138, 0.4)) brightness(1); }
-            50% { filter: drop-shadow(0 0 30px rgba(232, 92, 138, 0.8)) brightness(1.1); }
-        }
-
-        .rose-particles {
-            position: absolute;
-            inset: -20px;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--accent-rose);
-            border-radius: 50%;
-            opacity: 0;
-        }
-
-        /* Modals */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(5px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            padding: 20px;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            border-radius: 25px;
-            padding: 30px;
-            max-width: 500px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
-            position: relative;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .modal-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent-burgundy);
-        }
-
-        .close-modal {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(0,0,0,0.05);
-            cursor: pointer;
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            transition: all 0.3s ease;
-        }
-
-        .close-modal:hover {
-            background: rgba(232, 92, 138, 0.1);
-            color: var(--accent-rose);
-            transform: rotate(90deg);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid rgba(0,0,0,0.1);
-            border-radius: 12px;
-            font-size: 1rem;
-            font-family: 'Cairo', sans-serif;
-            transition: all 0.3s ease;
-            background: white;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--accent-rose);
-            box-shadow: 0 0 0 3px rgba(232, 92, 138, 0.1);
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, var(--accent-rose) 0%, var(--accent-burgundy) 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(232, 92, 138, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(232, 92, 138, 0.4);
-        }
-
-        .btn-secondary {
-            width: 100%;
-            padding: 12px;
-            background: rgba(0,0,0,0.05);
-            color: var(--text-primary);
-            border: none;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(0,0,0,0.1);
-        }
-
-        /* Dhikr List in Modal */
-        .dhikr-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .dhikr-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            background: white;
-            border-radius: 12px;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .dhikr-item:hover {
-            border-color: var(--accent-rose);
-            transform: translateX(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .dhikr-item.active {
-            border-color: var(--accent-rose);
-            background: linear-gradient(135deg, rgba(232, 92, 138, 0.05) 0%, rgba(139, 21, 56, 0.05) 100%);
-        }
-
-        .dhikr-info {
-            flex: 1;
-        }
-
-        .dhikr-text {
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 5px;
-            font-family: 'Noto Naskh Arabic', serif;
-        }
-
-        .dhikr-stats {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-
-        .dhikr-actions {
-            display: flex;
-            gap: 5px;
-        }
-
-        .icon-btn {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(0,0,0,0.05);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-        }
-
-        .icon-btn:hover {
-            background: var(--accent-rose);
-            color: white;
-            transform: scale(1.1);
-        }
-
-        /* Achievement Modal */
-        .achievement-modal {
-            text-align: center;
-            padding: 40px;
-        }
-
-        .treasure-chest {
-            width: 150px;
-            height: 150px;
-            margin: 0 auto 30px;
-            position: relative;
-        }
-
-        .chest-icon {
-            font-size: 100px;
-            animation: bounceChest 1s ease infinite;
-        }
-
-        @keyframes bounceChest {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        .achievement-title {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent-burgundy) 0%, var(--accent-rose) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 15px;
-        }
-
-        .achievement-text {
-            font-size: 1.5rem;
-            color: var(--text-primary);
-            font-family: 'Noto Naskh Arabic', serif;
-        }
-
-        /* About Modal */
-        .about-content {
-            text-align: center;
-        }
-
-        .about-rose {
-            font-size: 60px;
-            margin-bottom: 20px;
-            animation: roseGlow 3s ease-in-out infinite;
-        }
-
-        .about-title {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--accent-burgundy);
-            margin-bottom: 10px;
-        }
-
-        .about-subtitle {
-            font-size: 1.2rem;
-            color: var(--accent-rose);
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .about-message {
-            font-size: 1rem;
-            line-height: 1.8;
-            color: var(--text-primary);
-            margin-bottom: 20px;
-            text-align: right;
-            padding: 20px;
-            background: rgba(0,0,0,0.03);
-            border-radius: 15px;
-            font-family: 'Noto Naskh Arabic', serif;
-        }
-
-        .about-links {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .social-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 12px;
-            background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
-            color: white;
-            text-decoration: none;
-            border-radius: 25px;
-            font-weight: 700;
-            transition: all 0.3s ease;
-        }
-
-        .social-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(131, 58, 180, 0.3);
-        }
-
-        /* Calendar Styles */
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
-            margin-top: 20px;
-        }
-
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .calendar-nav {
-            display: flex;
-            gap: 10px;
-        }
-
-        .nav-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(0,0,0,0.05);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .nav-btn:hover {
-            background: var(--accent-rose);
-            color: white;
-        }
-
-        .day-cell {
-            aspect-ratio: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: white;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-
-        .day-cell:hover {
-            border-color: var(--accent-rose);
-            transform: scale(1.05);
-        }
-
-        .day-cell.has-data {
-            background: linear-gradient(135deg, rgba(232, 92, 138, 0.1) 0%, rgba(139, 21, 56, 0.05) 100%);
-            border-color: var(--accent-rose);
-        }
-
-        .day-cell .day-number {
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .day-cell .day-count {
-            font-size: 0.7rem;
-            color: var(--accent-rose);
-            font-weight: 700;
-        }
-
-        .weekday-header {
-            text-align: center;
-            font-weight: 700;
-            color: var(--accent-burgundy);
-            padding: 10px;
-            font-size: 0.9rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 480px) {
-            .title { font-size: 2rem; }
-            .circle-container { width: 280px; height: 280px; }
-            .circle-inner { width: 240px; height: 240px; }
-            .count-number { font-size: 4rem; }
-            .presets-grid { grid-template-columns: 1fr; }
-            .controls { gap: 10px; }
-            .control-btn { width: 50px; height: 50px; font-size: 1.2rem; }
-        }
-
-        /* Scrollbar Styling */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb { background: var(--accent-rose); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--accent-burgundy); }
-    </style>
-</head>
-<body>
-    <div class="silver-bg">
-        <div class="silver-shine"></div>
-    </div>
-
-    <div class="app-container">
-        <!-- Header -->
-        <header class="header">
-            <h1 class="title">مسبحة التُقَى</h1>
-            <p class="subtitle" id="startDate">بدأت في: ٩ فبراير ٢٠٢٦</p>
-        </header>
-
-        <!-- Sound & Vibration Toggles -->
-        <div class="toggles-section">
-            <button class="toggle-btn active" id="soundToggle" onclick="toggleSound()">
-                <span>🔊</span>
-                <span>الصوت</span>
-            </button>
-            <button class="toggle-btn active" id="vibrationToggle" onclick="toggleVibration()">
-                <span>📳</span>
-                <span>الاهتزاز</span>
-            </button>
-        </div>
-
-        <!-- Timer Section -->
-        <div class="timer-section">
-            <button class="timer-btn" onclick="resetTimer()" title="تصفير">⟲</button>
-            <div class="timer-display" id="timerDisplay">٠٠:٠٠:٠٠</div>
-            <button class="timer-btn" onclick="toggleTimer()" id="timerBtn" title="تشغيل/إيقاف">⏸</button>
-        </div>
-
-        <!-- Current Dhikr Name -->
-        <div class="current-dhikr-name" id="currentDhikrName">
-            سُبْحَانَ اللَّهِ
-        </div>
-
-        <!-- Main Circle -->
-        <div class="circle-container">
-            <button class="edit-btn" onclick="openEditModal()" title="تعديل">✎</button>
-            
-            <div class="circle-outer" id="circleOuter">
-                <div class="circle-inner" id="mainCircle" onclick="incrementCount()">
-                    <div class="count-number" id="countDisplay">٠</div>
-                    <div class="count-label">العدد الحالي</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Controls -->
-        <div class="controls">
-            <button class="control-btn" onclick="decreaseCount()" title="نقص">
-                <span>−</span>
-            </button>
-            <button class="control-btn" onclick="openDhikrList()" title="قائمة الأذكار">
-                <span>📋</span>
-            </button>
-            <button class="control-btn" onclick="toggleAutoMode()" id="autoBtn" title="وضع تلقائي">
-                <span>▶</span>
-            </button>
-            <button class="control-btn" onclick="openSettings()" title="الإعدادات">
-                <span>⚙</span>
-            </button>
-            <button class="control-btn" onclick="openCalendar()" title="التقويم">
-                <span>📅</span>
-            </button>
-        </div>
-
-        <!-- Auto Mode Panel -->
-        <div class="auto-mode-panel" id="autoModePanel">
-            <div class="auto-controls">
-                <div class="rhythm-detector">
-                    <button class="detect-btn" onclick="detectRhythm()">
-                        عَيِّن الإيقاع (٣ نقرات)
-                    </button>
-                    <div class="speed-display" id="speedDisplay">١ ث</div>
-                </div>
-                
-                <div class="slider-container">
-                    <input type="range" min="0.3" max="10" step="0.1" value="1" class="speed-slider" id="speedSlider" oninput="updateSpeedFromSlider(this.value)">
-                    <div class="slider-labels">
-                        <span>سريع (٠.٣ث)</span>
-                        <span>بطيء (١٠ث)</span>
-                    </div>
-                </div>
-
-                <div style="display: flex; gap: 10px; justify-content: center;">
-                    <button class="detect-btn" onclick="startAutoMode()" style="flex: 1;">ابدأ</button>
-                    <button class="detect-btn" onclick="stopAutoMode()" style="flex: 1; background: #636e72;">أوقف</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Preset Dhikrs -->
-        <div class="presets-section">
-            <div class="presets-title">
-                <span>📿</span>
-                <span>الأذكار المختارة</span>
-            </div>
-            <div class="presets-grid" id="presetsGrid">
-                <!-- Presets will be added by JS -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Floating Rose -->
-    <div class="floating-rose" id="floatingRose" onclick="openAboutModal()">
-        <svg class="rose-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <linearGradient id="roseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:#ff6b9d;stop-opacity:1" />
-                    <stop offset="50%" style="stop-color:#c44569;stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#8b1538;stop-opacity:1" />
-                </linearGradient>
-                <filter id="glow">
-                    <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-                    <feMerge>
-                        <feMergeNode in="coloredBlur"/>
-                        <feMergeNode in="SourceGraphic"/>
-                    </feMerge>
-                </filter>
-            </defs>
-            <!-- Rose petals -->
-            <path d="M50 20 C30 20 20 35 20 50 C20 65 35 80 50 85 C65 80 80 65 80 50 C80 35 70 20 50 20 Z" fill="url(#roseGrad)" filter="url(#glow)"/>
-            <path d="M50 25 C35 25 28 38 28 50 C28 62 40 72 50 75 C60 72 72 62 72 50 C72 38 65 25 50 25 Z" fill="#ff8fab" opacity="0.6"/>
-            <path d="M50 30 C40 30 35 40 35 50 C35 60 45 68 50 70 C55 68 65 60 65 50 C65 40 60 30 50 30 Z" fill="#ffb3c6" opacity="0.7"/>
-            <!-- Stem -->
-            <path d="M50 85 Q50 95 45 100 L55 100 Q50 95 50 85" fill="#2d6a4f"/>
-            <!-- Leaves -->
-            <ellipse cx="40" cy="90" rx="8" ry="4" fill="#40916c" transform="rotate(-30 40 90)"/>
-            <ellipse cx="60" cy="88" rx="8" ry="4" fill="#40916c" transform="rotate(30 60 88)"/>
-        </svg>
-        <div class="rose-particles" id="roseParticles"></div>
-    </div>
-
-    <!-- Edit Modal -->
-    <div class="modal-overlay" id="editModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">تعديل الذِكر</h2>
-                <button class="close-modal" onclick="closeModal('editModal')">×</button>
-            </div>
-            <div class="form-group">
-                <label class="form-label">اسم الذِكر</label>
-                <input type="text" class="form-input" id="editText" placeholder="أدخل نص الذِكر">
-            </div>
-            <div class="form-group">
-                <label class="form-label">العدد الحالي</label>
-                <input type="number" class="form-input" id="editCount" placeholder="٠">
-            </div>
-            <div class="form-group">
-                <label class="form-label">العدد المستهدف</label>
-                <input type="number" class="form-input" id="editTarget" placeholder="٣٣">
-            </div>
-            <div class="form-group">
-                <label class="form-label">عدد الدورات</label>
-                <input type="number" class="form-input" id="editRounds" placeholder="٠">
-            </div>
-            <div class="form-group">
-                <label class="form-label">السرعة (ثانية لكل تسبيحة)</label>
-                <input type="number" class="form-input" id="editSpeed" placeholder="١" step="0.1">
-            </div>
-            <button class="btn-primary" onclick="saveEdit()">حفظ التغييرات</button>
-            <button class="btn-secondary" onclick="closeModal('editModal')">إلغاء</button>
-        </div>
-    </div>
-
-    <!-- Dhikr List Modal -->
-    <div class="modal-overlay" id="dhikrListModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">قائمة الأذكار</h2>
-                <button class="close-modal" onclick="closeModal('dhikrListModal')">×</button>
-            </div>
-            <button class="btn-primary" onclick="addNewDhikr()" style="margin-bottom: 15px;">+ إضافة ذِكر جديد</button>
-            <div class="dhikr-list" id="dhikrListContainer">
-                <!-- Dhikrs will be added by JS -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Settings Modal -->
-    <div class="modal-overlay" id="settingsModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">الإعدادات</h2>
-                <button class="close-modal" onclick="closeModal('settingsModal')">×</button>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">لون التمييز</label>
-                <input type="color" class="form-input" id="accentColor" value="#e85c8a" onchange="changeAccentColor(this.value)">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">تصدير البيانات</label>
-                <button class="btn-primary" onclick="exportData()">📥 تصدير كـ JSON</button>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">استيراد البيانات</label>
-                <input type="file" class="form-input" id="importFile" accept=".json" onchange="importData(this)">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">السجلات</label>
-                <div id="logsContainer" style="max-height: 200px; overflow-y: auto; background: rgba(0,0,0,0.05); padding: 10px; border-radius: 8px; font-size: 0.85rem;">
-                    لا توجد سجلات
-                </div>
-            </div>
-
-            <button class="btn-secondary" onclick="closeModal('settingsModal')">إغلاق</button>
-        </div>
-    </div>
-
-    <!-- Calendar Modal -->
-    <div class="modal-overlay" id="calendarModal">
-        <div class="modal-content" style="max-width: 600px;">
-            <div class="modal-header">
-                <h2 class="modal-title" id="calendarTitle">التقويم</h2>
-                <button class="close-modal" onclick="closeModal('calendarModal')">×</button>
-            </div>
-            <div class="calendar-header">
-                <div class="calendar-nav">
-                    <button class="nav-btn" onclick="changeMonth(-1)">‹</button>
-                    <button class="nav-btn" onclick="changeMonth(1)">›</button>
-                </div>
-                <div style="font-weight: 700; color: var(--accent-burgundy);" id="currentMonthYear"></div>
-            </div>
-            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 10px;">
-                <div class="weekday-header">أحد</div>
-                <div class="weekday-header">إثن</div>
-                <div class="weekday-header">ثل</div>
-                <div class="weekday-header">أرب</div>
-                <div class="weekday-header">خم</div>
-                <div class="weekday-header">جم</div>
-                <div class="weekday-header">سب</div>
-            </div>
-            <div class="calendar-grid" id="calendarGrid"></div>
-        </div>
-    </div>
-
-    <!-- Achievement Modal -->
-    <div class="modal-overlay" id="achievementModal">
-        <div class="modal-content achievement-modal">
-            <div class="treasure-chest">
-                <div class="chest-icon">🎁</div>
-            </div>
-            <h2 class="achievement-title">تهانينا!</h2>
-            <p class="achievement-text" id="achievementText">وصلتِ إلى ١٠٠٠ تسبيحة</p>
-            <h3 style="font-size: 2rem; color: var(--accent-rose); margin-top: 20px; font-family: 'Noto Naskh Arabic', serif;">تَقَبَّلَ اللَّهُ</h3>
-            <button class="btn-primary" onclick="closeModal('achievementModal')" style="margin-top: 30px;">الحمد لله</button>
-        </div>
-    </div>
-
-    <!-- About Modal -->
-    <div class="modal-overlay" id="aboutModal">
-        <div class="modal-content about-content">
-            <div class="about-rose">🌹</div>
-            <h2 class="about-title">مسبحة التُقَى</h2>
-            <div class="about-subtitle">From: التُقَى<br>Toqa Ayman Aly Shabeeb</div>
-            
-            <div class="about-message">
-                <p>هذا العمل جزء من مشروع التُقَى، وهو صدقة جارية خالصة لوجه الله تعالى.</p>
-                <p>ويمكنكم الاقتباس والنشر منه بحرية.</p>
-                <p style="margin-top: 15px; font-weight: 700;">الدال على الخير كفاعله</p>
-                <p>شاركوا المسبحة وتابعونا، نسعد بمشاركتكم الأجر عبر مقترحاتكم وآرائكم لتطوير مشروع التُقَى، ويكون في ميزان حسناتكم بإذن الله.</p>
-                <p style="margin-top: 20px; font-size: 1.1rem; color: var(--accent-burgundy);">اللهم ارزقنا الفردوس الأعلى والنظر إلى وجهك الكريم 🤲</p>
-            </div>
-
-            <div class="about-links">
-                <a href="https://www.instagram.com/toqa_a_shabib_20?igsh=NTB0azBvNWNsNTA0" target="_blank" class="social-link">
-                    <span>📷</span>
-                    <span>تابعيني على Instagram</span>
-                </a>
-                <a href="#" class="social-link" style="background: linear-gradient(135deg, var(--accent-rose) 0%, var(--accent-burgundy) 100%);">
-                    <span>🌹</span>
-                    <span>قناة التُقَى</span>
-                </a>
-            </div>
-
-            <button class="btn-secondary" onclick="closeModal('aboutModal')" style="margin-top: 20px;">إغلاق</button>
-        </div>
-    </div>
-
-    <script>
-        // Data Management
+// Data Management
         const STORAGE_KEY = 'tasbeeh_taqwa_data_v1';
         const ACHIEVEMENTS = [500, 1000, 3000, 7000, 10000, 15000, 30000, 40000, 50000, 70000, 90000, 100000];
         
@@ -2215,6 +916,161 @@
                 }
             }
         });
-    </script>
-</body>
-</html>
+
+// ===== Responsive Live Wallpaper Engine (8-12s seamless loop, high performance) =====
+(function initLiveWallpaper() {
+    const canvas = document.getElementById('wallpaperCanvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d', { alpha: true });
+    const fallbackConfig = {
+        dimensions: { width: 1080, height: 1920 },
+        loopSeconds: 10,
+        palette: {
+            burgundy: '#8b1538',
+            rose: '#e85c8a',
+            silver: '#cfc7ca'
+        },
+        layers: [
+            { count: 34, radius: [18, 48], alpha: [0.06, 0.2], drift: 20, parallax: 0.18, speed: 0.34, colorWeights: { burgundy: 0.78, rose: 0.16, silver: 0.06 } },
+            { count: 28, radius: [10, 30], alpha: [0.1, 0.3], drift: 36, parallax: 0.34, speed: 0.5, colorWeights: { burgundy: 0.65, rose: 0.23, silver: 0.12 } },
+            { count: 18, radius: [6, 18], alpha: [0.14, 0.48], drift: 50, parallax: 0.58, speed: 0.75, colorWeights: { burgundy: 0.55, rose: 0.2, silver: 0.25 } }
+        ]
+    };
+
+    function hexToRgb(hex) {
+        const clean = hex.replace('#', '');
+        const full = clean.length === 3 ? clean.split('').map((c) => c + c).join('') : clean;
+        const int = parseInt(full, 16);
+        return { r: (int >> 16) & 255, g: (int >> 8) & 255, b: int & 255 };
+    }
+
+    function weightedChoice(weights) {
+        const entries = Object.entries(weights);
+        const total = entries.reduce((s, [, v]) => s + v, 0);
+        let cursor = Math.random() * total;
+        for (const [name, weight] of entries) {
+            cursor -= weight;
+            if (cursor <= 0) return name;
+        }
+        return entries[0][0];
+    }
+
+    async function loadConfig() {
+        try {
+            const res = await fetch('wallpaper_animation.json', { cache: 'no-store' });
+            if (!res.ok) throw new Error('failed config');
+            return await res.json();
+        } catch {
+            return fallbackConfig;
+        }
+    }
+
+    loadConfig().then((config) => {
+        const palette = {
+            burgundy: hexToRgb(config.palette.burgundy),
+            rose: hexToRgb(config.palette.rose),
+            silver: hexToRgb(config.palette.silver)
+        };
+
+        const particles = [];
+        for (const layer of config.layers) {
+            for (let i = 0; i < layer.count; i++) {
+                particles.push({
+                    baseX: Math.random() * config.dimensions.width,
+                    baseY: Math.random() * config.dimensions.height,
+                    radius: layer.radius[0] + Math.random() * (layer.radius[1] - layer.radius[0]),
+                    alpha: layer.alpha[0] + Math.random() * (layer.alpha[1] - layer.alpha[0]),
+                    drift: layer.drift,
+                    speed: layer.speed * (0.78 + Math.random() * 0.5),
+                    phase: Math.random() * Math.PI * 2,
+                    wobble: 0.8 + Math.random() * 1.1,
+                    parallax: layer.parallax,
+                    colorName: weightedChoice(layer.colorWeights)
+                });
+            }
+        }
+
+        let w = 1;
+        let h = 1;
+        let px = 0;
+        let py = 0;
+        let spx = 0;
+        let spy = 0;
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        function resize() {
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            w = Math.max(window.innerWidth, 1);
+            h = Math.max(window.innerHeight, 1);
+            canvas.width = Math.floor(w * dpr);
+            canvas.height = Math.floor(h * dpr);
+            canvas.style.width = `${w}px`;
+            canvas.style.height = `${h}px`;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        window.addEventListener('resize', resize, { passive: true });
+        window.addEventListener('mousemove', (e) => {
+            px = ((e.clientX / w) - 0.5) * 18;
+            py = ((e.clientY / h) - 0.5) * 18;
+        }, { passive: true });
+        window.addEventListener('deviceorientation', (e) => {
+            if (typeof e.gamma === 'number' && typeof e.beta === 'number') {
+                px = Math.max(-10, Math.min(10, e.gamma * 0.4));
+                py = Math.max(-10, Math.min(10, e.beta * 0.2));
+            }
+        }, { passive: true });
+
+        resize();
+
+        function frame(now) {
+            if (prefersReducedMotion) return;
+
+            const t = ((now % (config.loopSeconds * 1000)) / (config.loopSeconds * 1000)) * Math.PI * 2;
+            const sx = w / config.dimensions.width;
+            const sy = h / config.dimensions.height;
+            const scale = (sx + sy) * 0.5;
+
+            spx += (px - spx) * 0.045;
+            spy += (py - spy) * 0.045;
+
+            ctx.clearRect(0, 0, w, h);
+            ctx.globalCompositeOperation = 'lighter';
+
+            for (const p of particles) {
+                const wave = t * p.speed + p.phase;
+                const driftX = Math.sin(wave) * p.drift;
+                const driftY = Math.cos(wave * 0.95 + p.phase) * p.drift * 1.33;
+                const microX = Math.sin((t + p.phase) * (1.55 * p.wobble)) * p.drift * 0.32;
+                const microY = Math.cos((t + p.phase) * (1.35 * p.wobble)) * p.drift * 0.24;
+
+                const x = ((p.baseX + driftX + microX) * sx + (spx * p.parallax) + w) % w;
+                const y = ((p.baseY + driftY + microY) * sy + (spy * p.parallax) + h) % h;
+                const r = p.radius * scale;
+                const pulse = 0.76 + 0.24 * Math.sin(wave * 1.2 + p.phase);
+                const a = p.alpha * pulse;
+                const c = palette[p.colorName];
+
+                const g = ctx.createRadialGradient(x, y, 0, x, y, r * 2.7);
+                g.addColorStop(0, `rgba(${c.r}, ${c.g}, ${c.b}, ${a})`);
+                g.addColorStop(0.38, `rgba(${c.r}, ${c.g}, ${c.b}, ${a * 0.45})`);
+                g.addColorStop(1, `rgba(${c.r}, ${c.g}, ${c.b}, 0)`);
+
+                ctx.beginPath();
+                ctx.fillStyle = g;
+                ctx.arc(x, y, r, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            ctx.globalCompositeOperation = 'source-over';
+            requestAnimationFrame(frame);
+        }
+
+        if (prefersReducedMotion) {
+            ctx.clearRect(0, 0, w, h);
+        } else {
+            requestAnimationFrame(frame);
+        }
+    });
+})();
